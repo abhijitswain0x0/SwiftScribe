@@ -2,16 +2,30 @@
 
 ## Repo state
 
-- Greenfield project: the only file is `app_description.md`, the full product spec. Read it before building anything — it defines features, layout, shortcuts, and data model.
-- No package.json, build, lint, or test config exists yet. Scaffold first; add scripts and update this file as tooling lands.
+- Greenfield project: `app_description.md` is the full product spec. Read it before building anything — it defines features, layout, shortcuts, and data model.
+- Renderer scaffold exists (Vite + Svelte + TS). Electron main process is not wired up yet.
+
+## Commands
+
+- `pnpm dev` — Vite dev server (renderer only)
+- `pnpm build` — production renderer build to `dist/`
+- `pnpm typecheck` — `tsc --noEmit`
+- `pnpm check` — svelte-check (type diagnostics for `.svelte` files)
 
 ## Locked stack decisions (from the spec)
 
 - Electron + Svelte + TypeScript (strict mode) + Vite
 - **pnpm exclusively** — never npm or yarn
 - IndexedDB for all note storage (LocalStorage fallback acceptable for MVP only)
-- Markdown via marked or markdown-it; highlight.js for code blocks
+- Markdown via **markdown-it** (decided over marked); highlight.js for code blocks
 - electron-builder for packaging
+
+## Toolchain gotchas
+
+- TypeScript is pinned to `~6`: svelte-check does not support TS 7 (native/tsgo) yet.
+- Electron's npm package no longer has a postinstall hook. After a fresh `pnpm install`, if `node_modules/electron/dist/electron.exe` is missing, run `node node_modules/electron/install.js`.
+- Dependency build-script approvals live in `pnpm-workspace.yaml` under `allowBuilds` (pnpm 11 ignores the `pnpm` field in package.json).
+- Vite uses `base: './'` — required for Electron `file://` loading; don't change it.
 
 ## Architecture rules
 
