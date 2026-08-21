@@ -1,0 +1,13 @@
+:root {
+  color-scheme: light dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, 'SF Pro Text', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
